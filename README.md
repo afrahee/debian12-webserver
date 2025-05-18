@@ -1,7 +1,7 @@
 ✅ 1. Periksa format file /etc/apt/sources.list
 <p>File /etc/apt/sources.list Anda harus berisi URL repositori yang benar. 
 <p></p>Jalankan perintah untuk membuka file:
-<pre><code>sudo nano /etc/apt/sources.list</code></pre>
+<pre><code>nano /etc/apt/sources.list</code></pre>
 
 Pastikan file tersebut berisi baris yang benar seperti berikut:
 <pre><code># Debian 12 "Bookworm"
@@ -15,7 +15,7 @@ Setelah mengedit, simpan dengan Ctrl+O, tekan Enter, dan keluar dengan Ctrl+X.
 ✅ 2. Periksa DNS Resolver
 Pastikan /etc/resolv.conf sudah terkonfigurasi dengan benar, dengan DNS yang dapat mengakses internet seperti Google DNS (8.8.8.8).
 Jika Anda belum melakukannya, edit file /etc/resolv.conf:
-<pre><code>sudo nano /etc/resolv.conf
+<pre><code>nano /etc/resolv.conf
 </code></pre>
 
 Isi file dengan:
@@ -24,24 +24,16 @@ nameserver 1.1.1.1
 </code></pre>
 
 Setelah itu, kunci file agar tidak tertimpa:
-<pre><code>
-sudo chattr +i /etc/resolv.conf
-</code></pre>
+<pre><code>chattr +i /etc/resolv.conf</code></pre>
 
 ✅ 3. Coba lagi update dan install
 Setelah memastikan sources.list dan DNS sudah benar, coba jalankan:
-<pre><code>
-sudo apt update
-</code></pre>
+<pre><code>apt update</code></pre>
 
 Jika berhasil, lanjutkan dengan:
-<pre><code>
-sudo apt install apache2
-</code></pre>
+<pre><code>apt install apache2</code></pre>
 
 ✅ 4. Restart layanan jaringan
 Jika masalah masih berlanjut, coba restart layanan jaringan:
-<pre><code>
-sudo systemctl restart networking
-sudo dhclient
-</code></pre>
+<pre><code>systemctl restart networking</code></pre>
+<pre><code>dhclient</code></pre>
