@@ -1,0 +1,131 @@
+🎯 Tujuan: Menjalankan WordPress pada Debian 12
+WordPress membutuhkan:
+1.	Web server (Apache atau Nginx – kita pakai Apache)
+2.	PHP + modul pendukung
+3.	MySQL/MariaDB sebagai database
+4.	WordPress itu sendiri
+________________________________________
+✅ LANGKAH-LANGKAH INSTALASI WORDPRESS DI DEBIAN 12
+🔧 1. Pastikan Apache dan PHP sudah terpasang
+Jalankan:
+<pre><code>sudo apt update</code></pre>
+<pre><code>sudo apt install apache2 php libapache2-mod-php php-mysql</code></pre>
+
+🛢️ 2. Install MariaDB (MySQL)
+<pre><code>sudo apt install mariadb-server</code></pre>
+
+Lalu amankan instalasi:
+<pre><code>sudo mysql_secure_installation</code></pre>
+
+Jawab prompt seperti:
+•	Set root password: Yes
+•	Remove anonymous users: Yes
+•	Disallow root login remotely: Yes
+•	Remove test database: Yes
+•	Reload privilege tables: Yes
+
+🗃️ 3. Buat Database dan User untuk WordPress
+Masuk ke MariaDB:
+<pre><code>mysql</code></pre>
+
+Jalankan perintah berikut (ganti password sesuai kebutuhan):
+<pre><code>CREATE DATABASE wordpress;
+CREATE USER 'wpuser'@'localhost' IDENTIFIED BY 'passwordku';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;</code></pre>
+________________________________________
+📦 4. Download dan Install WordPress
+<pre><code>cd /tmp</code></pre>
+<pre><code>wget https://wordpress.org/latest.tar.gz</code></pre>
+<pre><code>tar -xzf latest.tar.gz</code></pre>
+<pre><code>mv wordpress /var/www/html/</code></pre>
+
+Ubah hak akses:
+<pre><code>chown -R www-data:www-data /var/www/html/wordpress</code></pre>
+<pre><code>chmod -R 755 /var/www/html/wordpress</code></pre>
+
+🌐 5. Konfigurasi Virtual Host (Opsional)
+Jika ingin akses dari domain khusus atau folder utama:
+<pre><code>nano /etc/apache2/sites-available/wordpress.conf</code></pre>
+Isi contoh konfigurasi:
+<pre><code><VirtualHost *:80>
+    ServerAdmin admin@localhost
+    DocumentRoot /var/www/html/wordpress
+    ServerName localhost
+
+    <Directory /var/www/html/wordpress/>
+        AllowOverride All
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost></code></pre>
+
+Aktifkan konfigurasi:
+<pre><code>a2ensite wordpress</code></pre>
+<pre><code>a2enmod rewrite</code></pre>
+<pre><code>systemctl restart apache2</code></pre>
+
+Lanjutkan di sisi client/browser
+
+✅ 1. Akses WordPress dari Browser
+Buka di browser:
+<pre><code>http://localhost/wordpress</code></pre>
+Atau:
+<pre><code>http://IP_VM_Anda/wordpress</code></pre>
+Ikuti panduan instalasi WordPress:
+•	Pilih bahasa
+•	Masukkan info database (wordpress, wpuser, passwordku)
+•	Buat akun admin WordPress
+
+✅ 2. Pilih Bahasa
+Anda akan diminta memilih bahasa untuk WordPress
+Pilih Bahasa Indonesia (atau sesuai preferensi)
+Klik Lanjutkan
+
+✅ 3. Informasi Koneksi Basis Data
+Sebelum lanjut, pastikan Anda sudah membuat database dan user, misalnya:
+Database: wordpress  
+User: wpuser  
+Password: passwordku  
+Host: localhost
+📝 Di halaman "Sebelum kita mulai...", klik Ayo!
+
+✅ 4. Isi Informasi Basis Data
+Isi form:
+Kolom	Nilai Contoh
+Nama Basis Data	wordpress
+Nama Pengguna	wpuser
+Sandi	passwordku
+Host Basis Data	localhost
+Prefiks Tabel	wp_ (biarkan default)
+
+Klik Kirim
+
+✅ Jika koneksi berhasil, Anda akan melihat pesan:
+
+“Bagus! Anda telah berhasil melewati bagian ini…”
+
+Klik Jalankan pemasangan
+
+✅ 5. Konfigurasi Situs WordPress
+Isi informasi situs:
+
+Kolom	Isi Contoh
+Judul Situs	Blog Debian Saya
+Nama Pengguna Admin	admin (atau nama Anda)
+Sandi	admin123 (buat yang kuat)
+Email Anda	email@contoh.com
+Privasi	✔️ centang agar bisa diindeks Google (opsional)
+
+📌 Catatan penting:
+
+Catat username & password admin
+Jangan gunakan password terlalu lemah (WordPress bisa menolak)
+Klik Pasang WordPress
+
+✅ 6. Selesai!
+Jika sukses, Anda akan melihat pesan:
+
+“Sukses! WordPress telah terpasang.”
